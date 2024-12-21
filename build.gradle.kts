@@ -15,6 +15,7 @@ repositories {
 gradlePlugin {
     plugins {
         create("fileSizeComparatorPlugin") {
+//            this id is used in the settings.gradle.kts file
             id = "com.sinsuren.diff.filesizecomparator"
             implementationClass = "com.sinsuren.diff.FileSizeComparatorPlugin"
         }
