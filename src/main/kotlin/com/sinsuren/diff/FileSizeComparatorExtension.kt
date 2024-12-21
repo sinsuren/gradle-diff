@@ -1,13 +1,14 @@
 package com.sinsuren.diff
 
 open class FileSizeComparatorExtension {
-    // List of file path configurations
-    var fileComparisons: MutableList<FileComparisonConfig> = mutableListOf()
+    // List to hold multiple file comparisons
+    val fileComparisons: MutableList<FileComparisonConfig> = mutableListOf()
 
-    fun fileComparison(configure: FileComparisonConfig.() -> Unit) {
-        val comparison = FileComparisonConfig()
-        comparison.configure()
-        fileComparisons.add(comparison)
+    // DSL method to add a file comparison configuration
+    fun fileComparison(action: FileComparisonConfig.() -> Unit) {
+        val comparisonConfig = FileComparisonConfig()
+        comparisonConfig.action()
+        fileComparisons.add(comparisonConfig)
     }
 }
 

@@ -1,8 +1,10 @@
 package com.sinsuren.diff
 
+import groovy.util.logging.Slf4j
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
+@Slf4j
 class FileSizeComparatorPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         val extension = project.extensions.create("fileSizeComparator", FileSizeComparatorExtension::class.java)
@@ -10,6 +12,10 @@ class FileSizeComparatorPlugin : Plugin<Project> {
         project.afterEvaluate {
             extension.fileComparisons.forEachIndexed { index, config ->
                 val taskName = "compareFileSizeTask$index"
+
+                println("Registering task: $taskName")
+                println("Configuration for task $index -> inputFilePath1: ${config.inputFilePath1}, " +
+                        "inputFilePath2: ${config.inputFilePath2}, outputFilePath: ${config.outputFilePath}")
 
                 project.tasks.register(taskName, CompareFileSizeTask::class.java) { task ->
                     task.group = "File Comparison"
@@ -22,4 +28,3 @@ class FileSizeComparatorPlugin : Plugin<Project> {
         }
     }
 }
-
