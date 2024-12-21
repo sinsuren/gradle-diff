@@ -4,9 +4,7 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
-import java.io.IOException
 import java.nio.file.Files
-import java.nio.file.Path
 import java.nio.file.Paths
 
 abstract class CompareFileSizeTask : DefaultTask() {
@@ -21,18 +19,27 @@ abstract class CompareFileSizeTask : DefaultTask() {
     var outputFilePath: String? = null
 
     @TaskAction
-    @Throws(IOException::class)
     fun compareFileSize() {
-        val file1Path: Path = Paths.get(inputFilePath1)
-        val file2Path: Path = Paths.get(inputFilePath2)
-        val outputPath: Path = Paths.get(outputFilePath)
+        // Fetch dynamic properties from the command line
+        val filePath1 = project.findProperty("inputFilePath1") as String? ?: inputFilePath1
+        val filePath2 = project.findProperty("inputFilePath2") as String? ?: inputFilePath2
+        val outPath = project.findProperty("outputFilePath") as String? ?: outputFilePath
+
+        // Validate inputs
+        if (filePath1.isNullOrEmpty() || filePath2.isNullOrEmpty() || outPath.isNullOrEmpty()) {
+            throw IllegalArgumentException("All file paths must be provided (inputFilePath1, inputFilePath2, outputFilePath).")
+        }
+
+        val file1Path = Paths.get(filePath1)
+        val file2Path = Paths.get(filePath2)
+        val outputPath = Paths.get(outPath)
 
         // Check file existence
         if (!Files.exists(file1Path)) {
-            throw IllegalArgumentException("File 1 does not exist: $inputFilePath1")
+            throw IllegalArgumentException("File 1 does not exist: $filePath1")
         }
         if (!Files.exists(file2Path)) {
-            throw IllegalArgumentException("File 2 does not exist: $inputFilePath2")
+            throw IllegalArgumentException("File 2 does not exist: $filePath2")
         }
 
         // Compare file sizes
@@ -46,6 +53,6 @@ abstract class CompareFileSizeTask : DefaultTask() {
 
         // Write result to output file
         Files.writeString(outputPath, result)
-        println("Comparison result written to: $outputFilePath")
+        println("Comparison result written to: $outPath")
     }
 }
