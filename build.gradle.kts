@@ -2,6 +2,7 @@ plugins {
     kotlin("jvm") version "1.9.23"
     `java-gradle-plugin`
     `maven-publish`
+//    `kotlin-dsl`
 //    signing
 }
 
@@ -25,6 +26,9 @@ gradlePlugin {
 dependencies {
     implementation(gradleApi())
     testImplementation(kotlin("test"))
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    testImplementation(gradleTestKit())
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
 }
 
 tasks.test {
