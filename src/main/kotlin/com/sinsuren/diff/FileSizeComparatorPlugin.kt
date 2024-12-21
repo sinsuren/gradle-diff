@@ -12,10 +12,9 @@ class FileSizeComparatorPlugin : Plugin<Project> {
         project.afterEvaluate {
             extension.fileComparisons.forEachIndexed { index, config ->
                 val taskName = "compareFileSizeTask$index"
-
-                println("Registering task: $taskName")
-                println("Configuration for task $index -> inputFilePath1: ${config.inputFilePath1}, " +
-                        "inputFilePath2: ${config.inputFilePath2}, outputFilePath: ${config.outputFilePath}")
+//                println("Registering task: $taskName")
+//                println("Configuration for task $index -> inputFilePath1: ${config.inputFilePath1}, " +
+//                        "inputFilePath2: ${config.inputFilePath2}, outputFilePath: ${config.outputFilePath}")
 
                 project.tasks.register(taskName, CompareFileSizeTask::class.java) { task ->
                     task.group = "File Comparison"
@@ -24,6 +23,14 @@ class FileSizeComparatorPlugin : Plugin<Project> {
                     task.inputFilePath2 = config.inputFilePath2
                     task.outputFilePath = config.outputFilePath
                 }
+
+            }
+
+            // Create an aggregate task that depends on all diff tasks
+            project.tasks.create("compareFileSizeTaskAll") { task ->
+                task.group = "File Comparison"
+                task.description = "Performs all diff tasks"
+                task.dependsOn(project.tasks.filter { it.name.startsWith("compareFileSizeTask") && it.name != "compareFileSizeTaskAll" })
             }
         }
     }

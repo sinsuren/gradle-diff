@@ -55,18 +55,22 @@ Use the `fileSizeComparator` extension to specify the input and output file path
 #### Kotlin DSL (`build.gradle.kts`):
 ```kotlin
 fileSizeComparator {
-    inputFilePath1 = "path/to/first/file.txt"
-    inputFilePath2 = "path/to/second/file.txt"
-    outputFilePath = "path/to/output/result.txt"
+    fileComparison {
+        inputFilePath1 = "path/to/first/file.txt"
+        inputFilePath2 = "path/to/second/file.txt"
+        outputFilePath = "path/to/output/result.txt"
+    }
 }
 ```
 
 #### Groovy DSL (`build.gradle`):
 ```groovy
 fileSizeComparator {
-    inputFilePath1 = "path/to/first/file.txt"
-    inputFilePath2 = "path/to/second/file.txt"
-    outputFilePath = "path/to/output/result.txt"
+    fileComparison {
+        inputFilePath1 = "path/to/first/file.txt"
+        inputFilePath2 = "path/to/second/file.txt"
+        outputFilePath = "path/to/output/result.txt"
+    }
 }
 ```
 
@@ -77,7 +81,11 @@ fileSizeComparator {
 Run the `compareFileSize` task to execute the file size comparison:
 
 ```bash
-./gradlew compareFileSize
+./gradlew compareFileSizeAll
+./gradlew compareFileSize0
+./gradlew compareFileSize1
+# counter based on the number of fileComparison blocks
+
 ```
 
 The result will be written to the specified `outputFilePath` and displayed in the console.
@@ -90,18 +98,26 @@ The result will be written to the specified `outputFilePath` and displayed in th
 In `build.gradle.kts`:
 ```kotlin
 fileSizeComparator {
-    inputFilePath1 = "src/main/resources/file1.txt"
-    inputFilePath2 = "src/main/resources/file2.txt"
-    outputFilePath = "build/output/comparison_result.txt"
+    fileComparison {
+        inputFilePath1 = "src/main/resources/file1.txt"
+        inputFilePath2 = "src/main/resources/file2.txt"
+        outputFilePath = "build/output/comparison_result.txt"
+    }
 }
 
 ```
 ### Another example with absolute paths:
 ```kotlin
 fileSizeComparator {
-    inputFilePath1 = "${rootProject.rootDir.absolutePath}/src/main/resources/application.properties"
-    inputFilePath2 = "${rootProject.rootDir.absolutePath}/src/main/resources/application-local.properties"
-    outputFilePath = "results.txt"
+    fileComparison {
+        inputFilePath1 = "${rootProject.rootDir.absolutePath}/src/main/resources/application.properties"
+        inputFilePath2 = "${rootProject.rootDir.absolutePath}/src/main/resources/application-local.properties"
+        outputFilePath = "results.txt"
+    }
+
+    fileComparison {
+    // Another set of comparison.        
+    }
 }
 
 ```

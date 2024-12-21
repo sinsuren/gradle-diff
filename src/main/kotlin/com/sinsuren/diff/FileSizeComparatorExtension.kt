@@ -1,13 +1,14 @@
 package com.sinsuren.diff
 
+import org.gradle.api.Action
+
 open class FileSizeComparatorExtension {
     // List to hold multiple file comparisons
     val fileComparisons: MutableList<FileComparisonConfig> = mutableListOf()
 
-    // DSL method to add a file comparison configuration
-    fun fileComparison(action: FileComparisonConfig.() -> Unit) {
+    fun fileComparison(action: Action<FileComparisonConfig>) {
         val comparisonConfig = FileComparisonConfig()
-        comparisonConfig.action()
+        action.execute(comparisonConfig)
         fileComparisons.add(comparisonConfig)
     }
 }
