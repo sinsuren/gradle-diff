@@ -41,7 +41,6 @@ publishing {
             from(components["java"])
 
 //             Plugin metadata
-//            groupId = ""
 //            artifactId = "file-size-comparator-plugin"
             groupId = "${project.group}"
             version = "${project.version}"
